@@ -23,6 +23,15 @@ namespace FairRecruitingEngine.Views
 
         private int progress = 0;
         private DispatcherTimer progressTimer;
+        private string BuildProgressBar(int percent, string lang)
+        {
+            int totalBlocks = 14;
+            int filledBlocks = (percent * totalBlocks) / 100;
+
+            string bar = new string('█', filledBlocks) + new string('░', totalBlocks - filledBlocks);
+
+            return $"🌍 Übersetze Analyse nach {lang}...\n{bar} {percent}%";
+        }
 
         public MainWindow()
         {
@@ -60,7 +69,7 @@ namespace FairRecruitingEngine.Views
 
                     progress = 0;
 
-                    vm.StatusMessage = $"Analyse-Text wird ins {lang} übersetzt... 0%";
+                    vm.StatusMessage = BuildProgressBar(0, lang);
 
                     progressTimer = new DispatcherTimer();
                     progressTimer.Interval = TimeSpan.FromMilliseconds(120);
@@ -70,7 +79,7 @@ namespace FairRecruitingEngine.Views
                         if (progress < 95)
                         {
                             progress++;
-                            vm.StatusMessage = $"Analyse-Text wird ins {lang} übersetzt... {progress}%";
+                            vm.StatusMessage = BuildProgressBar(progress, lang);
                         }
                     };
 
